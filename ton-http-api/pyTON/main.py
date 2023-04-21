@@ -17,6 +17,7 @@ from fastapi.exceptions import HTTPException, RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.responses import JSONResponse
 from fastapi import status
+from fastapi.middleware.cors import CORSMiddleware
 
 from tvm_valuetypes.cell import deserialize_cell_from_object
 
@@ -111,6 +112,18 @@ app = FastAPI(
     openapi_tags=tags_metadata
 )
 
+origins = ["*"]
+methods = ["*"]
+headers = ["*"]
+allow_credentials = True
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=allow_credentials,
+    allow_methods=methods,
+    allow_headers=headers,
+)
 
 tonlib = None
 
