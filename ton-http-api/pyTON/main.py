@@ -125,7 +125,7 @@ app.add_middleware(
     allow_headers=headers,
 )
 
-tonlib = None
+tonlib: TonlibManager = None
 
 @app.on_event("startup")
 async def startup():
@@ -497,6 +497,17 @@ async def get_token_data(
     """
     address = prepare_address(address)
     return await tonlib.get_token_data(address)
+
+@app.get('/getLibraries', response_model=TonResponse, response_model_exclude_none=True, tags=['blocks'])
+@json_rpc('getLibraries')
+@wrap_result
+async def get_libraries(
+    libraries: list = Query(..., description="List of base64 encoded libraries hashes")
+    ):
+    """
+    Get libraries codes.
+    """
+    return await tonlib.getLibraries(libraries)
 
 @app.get('/tryLocateTx', response_model=TonResponse, response_model_exclude_none=True, tags=['transactions'])
 @json_rpc('tryLocateTx')

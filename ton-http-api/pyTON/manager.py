@@ -80,6 +80,7 @@ class TonlibManager:
         self.getShards = self.cache_manager.cached(expire=600)(self.getShards)
         self.raw_getBlockTransactions = self.cache_manager.cached(expire=600)(self.raw_getBlockTransactions)
         self.getBlockTransactions = self.cache_manager.cached(expire=600)(self.getBlockTransactions)
+        self.getLibraries = self.cache_manager.cached(expire=600)(self.getLibraries)
         self.getBlockHeader = self.cache_manager.cached(expire=600)(self.getBlockHeader)
         self.get_config_param = self.cache_manager.cached(expire=5)(self.get_config_param)
         self.get_token_data = self.cache_manager.cached(expire=15)(self.get_token_data)
@@ -375,6 +376,9 @@ class TonlibManager:
 
     async def getMasterchainInfo(self):
         return await self.dispatch_request('get_masterchain_info')
+
+    async def getLibraries(self, lib_hashes: list):
+        return await self.dispatch_request('get_libraries', lib_hashes)
 
     async def getMasterchainBlockSignatures(self, seqno):
         return await self.dispatch_request('get_masterchain_block_signatures', seqno)
